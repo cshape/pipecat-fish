@@ -5,8 +5,7 @@ Guidance for working in this repo.
 ## What this is
 
 A minimal [Pipecat](https://docs.pipecat.ai) voice agent: browser ↔ STT → LLM →
-Fish Audio TTS. It mirrors a LiveKit Agents voice bot's service stack on Pipecat.
-Two files hold all the logic:
+Fish Audio TTS. Two files hold all the logic:
 
 - [`bot.py`](bot.py) — the pipeline, service construction, turn-taking, and the
   runner entry point.
