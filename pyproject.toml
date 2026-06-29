@@ -1,0 +1,24 @@
+[project]
+name = "pipecat-fish"
+version = "0.1.0"
+description = "Pipecat voice agent — Fish Audio TTS on the same stack as livekit-demo (AssemblyAI STT, Gemma-capable OpenAI LLM, Silero VAD)"
+requires-python = ">=3.10"
+dependencies = [
+    # Same service stack as ../livekit-demo/fish, expressed as Pipecat extras:
+    #   assemblyai -> STT, openai -> LLM (also our self-hosted Gemma seam), fish -> TTS,
+    #   silero -> VAD, webrtc/daily -> transports, runner -> local dev server.
+    "pipecat-ai[webrtc,daily,silero,assemblyai,deepgram,openai,fish,runner]",
+    "pipecat-ai-cli",
+    "python-dotenv",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.11,<1",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["I"]
