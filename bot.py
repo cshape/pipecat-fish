@@ -1,21 +1,16 @@
 #
 # Pipecat + Fish Audio voice agent.
 #
-# Mirrors the service stack of ../livekit-demo/fish on Pipecat instead of
-# LiveKit Agents:
-#
 #   STT  - Deepgram Flux (default) or AssemblyAI   (set STT_PROVIDER)
-#   LLM  - OpenAI-compatible     (gpt-* by default, or self-hosted Gemma via LLM_BASE_URL — see llm.py)
-#   TTS  - Fish Audio s2.1-pro   (PCM @ 24kHz, low latency)
+#   LLM  - OpenAI-compatible (Gemma via LLM_BASE_URL, else OpenAI — see llm.py)
+#   TTS  - Fish Audio s2.1-pro (PCM @ 24kHz, low latency)
 #   VAD  - Silero (barge-in)
 #
 # Turn-taking depends on STT_PROVIDER:
-#   deepgram  -> Flux's native end-of-turn drives turns (ExternalUserTurnStrategies)
-#   assemblyai-> Silero VAD + bundled smart-turn-v3 model decides end-of-turn
+#   deepgram  -> Flux's native end-of-turn (ExternalUserTurnStrategies)
+#   assemblyai-> Silero VAD + bundled smart-turn-v3 model
 #
-# Run it (opens a local WebRTC client at http://localhost:7860):
-#
-#     uv run bot.py
+# Run: uv run bot.py  (opens a WebRTC client at http://localhost:7860)
 #
 
 import os
@@ -69,12 +64,11 @@ SYSTEM_INSTRUCTION = (
 
 GREETING = "Say hello warmly and briefly introduce yourself in one short sentence, then ask how I'm doing."
 
-# Default Fish voice (Maren, American F) — same preset the LiveKit demo opens in.
-# Override per deployment with FISH_VOICE_ID (a Fish reference/model id).
+# Default Fish voice (Maren, American F). Override with FISH_VOICE_ID.
 DEFAULT_FISH_VOICE_ID = "0e24ff9936d34df4bddce26398cf1311"
 
-# Fish s2.1-pro over PCM @ 24kHz, low latency — matches livekit-demo/fish/src/tts_factory.py.
-# PCM (over WAV) avoids the container-decode path that adds a first-word crackle.
+# Fish s2.1-pro, PCM @ 24kHz, low latency. PCM (over WAV) avoids the
+# container-decode path that adds an audible first-word crackle.
 FISH_MODEL = os.getenv("FISH_MODEL", "s2.1-pro")
 FISH_OUTPUT_FORMAT = os.getenv("FISH_OUTPUT_FORMAT", "pcm")
 FISH_SAMPLE_RATE = int(os.getenv("FISH_SAMPLE_RATE", "24000"))
